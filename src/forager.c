@@ -17,7 +17,7 @@ static void activate(GtkApplication *app, gpointer user_data) {
 	const int row_count = 100;
 
 	GtkWidget *window;
-	GtkWidget *box;
+	GtkWidget *grid;
 	GtkWidget *menu_bar;
 	GtkWidget *panes;
 	GtkWidget *scrolled_window;
@@ -30,18 +30,22 @@ static void activate(GtkApplication *app, gpointer user_data) {
 	gtk_window_set_title(GTK_WINDOW(window), "Forager");
 	gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);
 
-	box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-	gtk_container_add(GTK_CONTAINER(window), box);
+	grid = gtk_grid_new();
+	gtk_container_add(GTK_CONTAINER(window), grid);
 
 	menu_bar = gtk_menu_bar_new();
+	g_object_set(G_OBJECT(menu_bar), "hexpand", 1);
+	g_object_set(G_OBJECT(menu_bar), "vexpand", 0);
 	gtk_container_add(GTK_CONTAINER(menu_bar), gtk_menu_item_new_with_label("File"));
 	gtk_container_add(GTK_CONTAINER(menu_bar), gtk_menu_item_new_with_label("View"));
-	gtk_container_add(GTK_CONTAINER(box), menu_bar);
+	gtk_grid_attach(GTK_GRID(grid), menu_bar, 0, 0, 1, 1);
 
 	panes = gtk_paned_new(GTK_ORIENTATION_HORIZONTAL);
-	gtk_container_add(GTK_CONTAINER(box), panes);
+	g_object_set(G_OBJECT(panes), "expand", 1);
+	gtk_grid_attach(GTK_GRID(grid), panes, 0, 1, 1, 1);
 
 	scrolled_window = gtk_scrolled_window_new(NULL, NULL);
+	g_object_set(G_OBJECT(scrolled_window), "expand", 1);
 	gtk_paned_add1(GTK_PANED(panes), scrolled_window);
 
 	list_box = gtk_list_box_new();
@@ -56,7 +60,8 @@ static void activate(GtkApplication *app, gpointer user_data) {
 	gtk_paned_add2(GTK_PANED(panes), text_box);
 
 	button_box = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
-	gtk_container_add(GTK_CONTAINER(box), button_box);
+	g_object_set(G_OBJECT(button_box), "vexpand", 0);
+	gtk_grid_attach(GTK_GRID(grid), button_box, 0, 3, 1, 1);
 
 	button = gtk_button_new_with_label("Button");
 	gtk_container_add(GTK_CONTAINER(button_box), button);
