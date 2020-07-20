@@ -34,9 +34,9 @@ static void activate(GtkApplication *app, gpointer user_data) {
 	gtk_container_add(GTK_CONTAINER(window), box);
 
 	menu_bar = gtk_menu_bar_new();
-	gtk_container_add(GTK_CONTAINER(box), menu_bar);
 	gtk_container_add(GTK_CONTAINER(menu_bar), gtk_menu_item_new_with_label("File"));
 	gtk_container_add(GTK_CONTAINER(menu_bar), gtk_menu_item_new_with_label("View"));
+	gtk_container_add(GTK_CONTAINER(box), menu_bar);
 
 	panes = gtk_paned_new(GTK_ORIENTATION_HORIZONTAL);
 	gtk_container_add(GTK_CONTAINER(box), panes);
@@ -52,19 +52,13 @@ static void activate(GtkApplication *app, gpointer user_data) {
 		gtk_list_box_insert(GTK_LIST_BOX(list_box), row, -1);
 	}
 
-	//GtkTextTagTable *tag_table = gtk_text_tag_table_new();
-	//GtkTextTag *tag = gtk_text_tag_new("Lorem ipsum dolor");
-	//gtk_text_tag_table_add(tag_table, tag);
-	//text_box = gtk_text_view_new_with_buffer(tag_table);
 	text_box = gtk_text_view_new();
 	gtk_paned_add2(GTK_PANED(panes), text_box);
 
 	button_box = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
-	//gtk_paned_add2(GTK_PANED(panes), button_box);
 	gtk_container_add(GTK_CONTAINER(box), button_box);
 
 	button = gtk_button_new_with_label("Button");
-	//g_signal_connect(button, "clicked", G_CALLBACK(print_hello), NULL);
 	gtk_container_add(GTK_CONTAINER(button_box), button);
 
 	gtk_widget_show_all(window);
