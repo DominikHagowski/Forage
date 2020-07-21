@@ -2,7 +2,10 @@
 #include "window.h"
 
 void activate(GtkApplication *app, gpointer user_data) {
+	const int win_width = 800;
+	const int win_height = 600;
 	const int row_count = 100;
+	const int paned_pos = 300;
 
 	GtkWidget *window;
 	GtkWidget *grid;
@@ -16,7 +19,7 @@ void activate(GtkApplication *app, gpointer user_data) {
 
 	window = gtk_application_window_new(app);
 	gtk_window_set_title(GTK_WINDOW(window), "Forage");
-	gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);
+	gtk_window_set_default_size(GTK_WINDOW(window), win_width, win_height);
 
 	grid = gtk_grid_new();
 	gtk_container_add(GTK_CONTAINER(window), grid);
@@ -29,7 +32,7 @@ void activate(GtkApplication *app, gpointer user_data) {
 	gtk_grid_attach(GTK_GRID(grid), menu_bar, 0, 0, 1, 1);
 
 	panes = gtk_paned_new(GTK_ORIENTATION_HORIZONTAL);
-	gtk_paned_set_position(GTK_PANED(panes), 300);
+	gtk_paned_set_position(GTK_PANED(panes), paned_pos);
 	g_object_set(G_OBJECT(panes), "expand", 1, NULL);
 	gtk_grid_attach(GTK_GRID(grid), panes, 0, 1, 1, 1);
 
