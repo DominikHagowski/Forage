@@ -1,17 +1,7 @@
 #include <gtk/gtk.h>
-#include "forage.h"
+#include "window.h"
 
-int main(int argc, char **argv) {
-	GtkApplication *app;
-	int status;
-
-	app = gtk_application_new("org.mzyzc.forage", G_APPLICATION_FLAGS_NONE);
-	g_signal_connect(app, "activate", G_CALLBACK(activate), NULL);
-	
-	return g_application_run(G_APPLICATION(app), argc, argv);
-}
-
-static void activate(GtkApplication *app, gpointer user_data) {
+void activate(GtkApplication *app, gpointer user_data) {
 	const int row_count = 100;
 
 	GtkWidget *window;
@@ -32,19 +22,19 @@ static void activate(GtkApplication *app, gpointer user_data) {
 	gtk_container_add(GTK_CONTAINER(window), grid);
 
 	menu_bar = gtk_menu_bar_new();
-	g_object_set(G_OBJECT(menu_bar), "hexpand", 1);
-	g_object_set(G_OBJECT(menu_bar), "vexpand", 0);
+	g_object_set(G_OBJECT(menu_bar), "hexpand", 1, NULL);
+	g_object_set(G_OBJECT(menu_bar), "vexpand", 0, NULL);
 	gtk_container_add(GTK_CONTAINER(menu_bar), gtk_menu_item_new_with_label("File"));
 	gtk_container_add(GTK_CONTAINER(menu_bar), gtk_menu_item_new_with_label("View"));
 	gtk_grid_attach(GTK_GRID(grid), menu_bar, 0, 0, 1, 1);
 
 	panes = gtk_paned_new(GTK_ORIENTATION_HORIZONTAL);
 	gtk_paned_set_position(GTK_PANED(panes), 300);
-	g_object_set(G_OBJECT(panes), "expand", 1);
+	g_object_set(G_OBJECT(panes), "expand", 1, NULL);
 	gtk_grid_attach(GTK_GRID(grid), panes, 0, 1, 1, 1);
 
 	scrolled_window = gtk_scrolled_window_new(NULL, NULL);
-	g_object_set(G_OBJECT(scrolled_window), "expand", 1);
+	g_object_set(G_OBJECT(scrolled_window), "expand", 1, NULL);
 	gtk_paned_add1(GTK_PANED(panes), scrolled_window);
 
 	list_box = gtk_list_box_new();
@@ -59,7 +49,7 @@ static void activate(GtkApplication *app, gpointer user_data) {
 	gtk_paned_add2(GTK_PANED(panes), text_box);
 
 	button_box = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
-	g_object_set(G_OBJECT(button_box), "vexpand", 0);
+	g_object_set(G_OBJECT(button_box), "vexpand", 0, NULL);
 	gtk_grid_attach(GTK_GRID(grid), button_box, 0, 3, 1, 1);
 
 	button = gtk_button_new_with_label("Button");
@@ -68,7 +58,7 @@ static void activate(GtkApplication *app, gpointer user_data) {
 	gtk_widget_show_all(window);
 }
 
-static GtkWidget *create_row(gchar *text) {
+GtkWidget *create_row(gchar *text) {
 	GtkWidget *row;
 	GtkWidget *box;
 	GtkWidget *label;
