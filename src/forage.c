@@ -39,6 +39,7 @@ static void activate(GtkApplication *app, gpointer user_data) {
 	gtk_grid_attach(GTK_GRID(grid), menu_bar, 0, 0, 1, 1);
 
 	panes = gtk_paned_new(GTK_ORIENTATION_HORIZONTAL);
+	gtk_paned_set_position(GTK_PANED(panes), 300);
 	g_object_set(G_OBJECT(panes), "expand", 1);
 	gtk_grid_attach(GTK_GRID(grid), panes, 0, 1, 1, 1);
 
