@@ -1,17 +1,25 @@
-TARGET = build/forage
+SRCDIR = src
+OBJDIR = build
+
 CC = gcc
 CFLAGS = -g -Wall -pedantic
-OBJS = build/main.o build/window.o
 GTKDEPS = `pkg-config --cflags --libs gtk+-3.0`
 
-all: $(OBJS)
+TARGET = $(OBJDIR)/forage
+OBJS = $(OBJDIR)/main.o $(OBJDIR)/window.o
+
+
+all: $(OBJS) | $(OBJDIR)
 	$(CC) -o $(TARGET) $(OBJS) $(CFLAGS) $(GTKDEPS)
 
-build/main.o: src/main.c
-	$(CC) -c $(CFLAGS) src/main.c $(GTKDEPS) -o build/main.o
+$(OBJDIR)/main.o: $(SRCDIR)/main.c | $(OBJDIR)
+	$(CC) -c $(CFLAGS) $(SRCDIR)/main.c $(GTKDEPS) -o $(OBJDIR)/main.o
 
-build/window.o: src/window.c
-	$(CC) -c $(CFLAGS) src/window.c $(GTKDEPS) -o build/window.o
+$(OBJDIR)/window.o: $(SRCDIR)/window.c | $(OBJDIR)
+	$(CC) -c $(CFLAGS) $(SRCDIR)/window.c $(GTKDEPS) -o $(OBJDIR)/window.o
+
+$(OBJDIR):
+	mkdir $(OBJDIR)
 
 clean:
-	rm -f build/*.o build/forage
+	rm -f $(OBJDIR)/*.o $(OBJDIR)/forage
