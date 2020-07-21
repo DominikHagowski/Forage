@@ -1,7 +1,5 @@
 #include <gtk/gtk.h>
-
-static void activate(GtkApplication *app, gpointer user_data);
-static GtkWidget *create_row(gchar *text);
+#include "forage.h"
 
 int main(int argc, char **argv) {
 	GtkApplication *app;
