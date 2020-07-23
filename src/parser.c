@@ -29,5 +29,8 @@ void parse_document(char *doc_name) {
 		xmlFreeDoc(document);
 		return;
 	}
+
+	printf("Reading successful\n");
+	xmlFreeDoc(document);
 }
 
