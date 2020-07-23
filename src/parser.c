@@ -20,11 +20,13 @@ void parse_document(char *doc_name) {
 
 	if (cursor == NULL) {
 		fprintf(stderr, "Document is empty\n");
+		xmlFreeDoc(document);
 		return;
 	}
 
 	if (xmlStrcmp(cursor->name, (const xmlChar *)"rss")) {
 		fprintf(stderr, "Document is not an valid RSS feed (missing rss node)\n");
+		xmlFreeDoc(document);
 		return;
 	}
 
@@ -32,6 +34,7 @@ void parse_document(char *doc_name) {
 	if (xmlIsBlankNode(cursor)) { cursor = cursor->next; }  // skip blank nodes
 	if (xmlStrcmp(cursor->name, (const xmlChar *)"channel")) {
 		fprintf(stderr, "Document is not an valid RSS feed (missing channel node)\n");
+		xmlFreeDoc(document);
 		return;
 	}
 
