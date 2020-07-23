@@ -5,11 +5,11 @@
 #include <libxml/parser.h>
 #include "parser.h"
 
-void parse_document(char *doc_name) {
+void parse_document(char *doc_path) {
 	xmlDoc *document;
 	xmlNode *cursor;
 
-	document = xmlParseFile(doc_name);
+	document = xmlReadFile(doc_path, NULL, 0);
 
 	if (document == NULL) {
 		fprintf(stderr, "Document could not be parsed.\n");
