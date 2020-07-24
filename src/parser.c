@@ -45,8 +45,8 @@ GList *parse_document(char *doc_path) {
 		cursor = cursor->next;
 	}
 
-	//xmlFree(cursor);
-	//xmlFree(document);
+	xmlFreeNode(cursor);
+	xmlFreeDoc(document);
 
 	return item_list;
 }
