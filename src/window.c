@@ -1,6 +1,5 @@
 #include <gtk/gtk.h>
 #include "window.h"
-#include "parser.h"
 
 void activate(GtkApplication *app, gpointer user_data) {
 	const int win_width = 800;

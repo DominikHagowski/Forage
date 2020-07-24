@@ -1,11 +1,15 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <glib.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include "parser.h"
 
-void parse_document(char *doc_path) {
+GList *parse_document(char *doc_path) {
+	GList *item_list = NULL;
+	rss_item *current_item;
+
 	xmlDoc *document;
 	xmlNode *cursor;
 
@@ -13,7 +17,7 @@ void parse_document(char *doc_path) {
 
 	if (document == NULL) {
 		fprintf(stderr, "Document could not be parsed.\n");
-		return;
+		exit(1);
 	}
 
 	cursor = xmlDocGetRootElement(document);
@@ -21,13 +25,13 @@ void parse_document(char *doc_path) {
 	if (cursor == NULL) {
 		fprintf(stderr, "Document is empty\n");
 		xmlFreeDoc(document);
-		return;
+		exit(2);
 	}
 
 	if (xmlStrcmp(cursor->name, (const xmlChar *)"rss")) {
 		fprintf(stderr, "Document is not an valid RSS feed (missing rss node)\n");
 		xmlFreeDoc(document);
-		return;
+		exit(3);
 	}
 
 	cursor = cursor->xmlChildrenNode;
@@ -35,45 +39,58 @@ void parse_document(char *doc_path) {
 	if (xmlStrcmp(cursor->name, (const xmlChar *)"channel")) {
 		fprintf(stderr, "Document is not an valid RSS feed (missing channel node)\n");
 		xmlFreeDoc(document);
-		return;
+		exit(4);
 	}
 
 	cursor = cursor->xmlChildrenNode;
 	while (cursor != NULL) {
 		if (!(xmlStrcmp(cursor->name, (const xmlChar *)"item"))) {
-			parse_item(document, cursor);
+			current_item = parse_item(document, cursor);
+			item_list = g_list_prepend(item_list, current_item);
 		}
 		cursor = cursor->next;
 	}
+
+	//xmlFree(cursor);
+	//xmlFree(document);
+
+	return item_list;
 }
 
-void parse_item(xmlDoc *document, xmlNode *cursor) {
-	xmlChar *title;
-	xmlChar *link;
-	xmlChar *description;
+rss_item *parse_item(xmlDoc *document, xmlNode *cursor) {
+	rss_item *item = malloc(sizeof(rss_item));
 
 	cursor = cursor->xmlChildrenNode;
 	while (cursor != NULL) {
 		if (!(xmlStrcmp(cursor->name, (const xmlChar *)"title"))) {
-			title = xmlNodeListGetString(document, cursor->xmlChildrenNode, 1);
+			item->title = (char *)xmlNodeListGetString(document, cursor->xmlChildrenNode, 1);
 		}
 		else if (!(xmlStrcmp(cursor->name, (const xmlChar *)"link"))) {
-			link = xmlNodeListGetString(document, cursor->xmlChildrenNode, 1);
+			item->link = (char *)xmlNodeListGetString(document, cursor->xmlChildrenNode, 1);
 		}
 		else if (!(xmlStrcmp(cursor->name, (const xmlChar *)"description"))) {
-			description = xmlNodeListGetString(document, cursor->xmlChildrenNode, 1);
+			item->description = (char *)xmlNodeListGetString(document, cursor->xmlChildrenNode, 1);
 		}
 
 		cursor = cursor->next;
 	}
 
-	printf("title: %s\n", title);
-	printf("link: %s\n", link);
-	printf("description: %s\n", description);
-	printf("\n");
+	return item;
+}
 
-	xmlFree(title);
-	xmlFree(link);
-	xmlFree(description);
+void display_feed(GList *items) {
+	rss_item *data = NULL;
+	for (GList *l = items; l != NULL; l = l->next) {
+		data = l->data;
+		g_print("title: %s\n", data->title);
+		g_print("link: %s\n", data->link);
+		g_print("description: %s\n", data->description);
+		g_print("\n");
+	}
+}
+
+void update_feed(char *path) {
+	GList *items = parse_document(path);
+	display_feed(items);
 }
 

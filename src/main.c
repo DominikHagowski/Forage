@@ -1,4 +1,6 @@
 #include <gtk/gtk.h>
+#include <libxml/xmlmemory.h>
+#include <libxml/parser.h>
 #include "window.h"
 #include "parser.h"
 
@@ -18,6 +20,6 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 
-	parse_document(argv[1]);
+	update_feed(argv[1]);
 }
 
