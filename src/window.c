@@ -1,4 +1,3 @@
-#include <gtk/gtk.h>
 #include "window.h"
 
 void activate(GtkApplication *app, gpointer user_data) {
@@ -56,6 +55,7 @@ void activate(GtkApplication *app, gpointer user_data) {
 	gtk_grid_attach(GTK_GRID(grid), button_box, 0, 3, 1, 1);
 
 	button = gtk_button_new_with_label("Button");
+	//g_signal_connect(button, "clicked", G_CALLBACK(parse_document), NULL);
 	gtk_container_add(GTK_CONTAINER(button_box), button);
 
 	gtk_widget_show_all(window);
