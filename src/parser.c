@@ -53,17 +53,14 @@ void parse_item(xmlDoc *document, xmlNode *cursor) {
 	xmlChar *description;
 
 	cursor = cursor->xmlChildrenNode;
-
 	while (cursor != NULL) {
 		if (!(xmlStrcmp(cursor->name, (const xmlChar *)"title"))) {
 			title = xmlNodeListGetString(document, cursor->xmlChildrenNode, 1);
 		}
-
-		if (!(xmlStrcmp(cursor->name, (const xmlChar *)"link"))) {
+		else if (!(xmlStrcmp(cursor->name, (const xmlChar *)"link"))) {
 			link = xmlNodeListGetString(document, cursor->xmlChildrenNode, 1);
 		}
-
-		if (!(xmlStrcmp(cursor->name, (const xmlChar *)"description"))) {
+		else if (!(xmlStrcmp(cursor->name, (const xmlChar *)"description"))) {
 			description = xmlNodeListGetString(document, cursor->xmlChildrenNode, 1);
 		}
 
