@@ -1,6 +1,3 @@
-#include <glib.h>
-#include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
 #include "update.h"
 
 void display_feed(GList *items) {

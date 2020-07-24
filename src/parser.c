@@ -2,8 +2,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <glib.h>
-#include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
 #include "parser.h"
 
 GList *parse_document(char *doc_path) {

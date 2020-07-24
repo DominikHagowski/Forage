@@ -1,6 +1,3 @@
-#include <gtk/gtk.h>
-#include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
 #include "window.h"
 #include "update.h"
 

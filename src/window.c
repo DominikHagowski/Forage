@@ -1,4 +1,3 @@
-#include <gtk/gtk.h>
 #include "window.h"
 
 void activate(GtkApplication *app, gpointer user_data) {
