@@ -1,19 +1,15 @@
 #include "update.h"
 
-void display_feed(GList *items) {
+void update_feed(GtkWidget *list_box, gchar *path) {
+	GList *items = parse_document(path);
 	rss_item *data = NULL;
+
 	for (GList *l = items; l != NULL; l = l->next) {
 		data = l->data;
-		g_print("title: %s\n", data->title);
-		g_print("link: %s\n", data->link);
-		g_print("description: %s\n", data->description);
-		g_print("\n");
+		GtkWidget *row = create_row(data->title);
+		gtk_list_box_insert(GTK_LIST_BOX(list_box), row, -1);
 	}
-}
 
-void update_feed(char *path) {
-	GList *items = parse_document(path);
-	display_feed(items);
 	clear_feed(items);
 }
 
@@ -27,5 +23,21 @@ void clear_feed(GList *items) {
 		free(data);
 	}
 	g_list_free(items);
+}
+
+GtkWidget *create_row(gchar *text) {
+	GtkWidget *row;
+	GtkWidget *box;
+	GtkWidget *label;
+
+ 	row = gtk_list_box_row_new();
+
+	box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
+	gtk_container_add(GTK_CONTAINER(row), box);
+
+	label = gtk_label_new(text);
+	gtk_container_add(GTK_CONTAINER(box), label);
+
+	return row;
 }
 

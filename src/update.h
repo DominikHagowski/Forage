@@ -1,6 +1,7 @@
+#include <gtk/gtk.h>
 #include "parser.h"
 
-void display_feed(GList *items);
-void update_feed(char *path);
+void update_feed(GtkWidget *list_box, gchar *path);
 void clear_feed(GList *items);
+GtkWidget *create_row(gchar *text);
 
