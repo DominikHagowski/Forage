@@ -15,6 +15,8 @@ void activate(GtkApplication *app, gpointer user_data) {
 	GtkWidget *chooser_button;
 	GtkWidget *chooser_button_box;
 
+	feed_object *feed;
+
 	window = gtk_application_window_new(app);
 	gtk_window_set_title(GTK_WINDOW(window), "Forage");
 	gtk_window_set_default_size(GTK_WINDOW(window), win_width, win_height);
@@ -48,16 +50,19 @@ void activate(GtkApplication *app, gpointer user_data) {
 	g_object_set(G_OBJECT(chooser_button_box), "vexpand", 0, NULL);
 	gtk_grid_attach(GTK_GRID(grid), chooser_button_box, 0, 3, 1, 1);
 
+	feed = feed_init(list_box, text_box);
+
 	chooser_button = gtk_file_chooser_button_new("Open", GTK_FILE_CHOOSER_ACTION_OPEN);
-	g_signal_connect(chooser_button, "file-set", G_CALLBACK(set_path), list_box);
+	g_signal_connect(chooser_button, "file-set", G_CALLBACK(set_path), feed);
 	gtk_container_add(GTK_CONTAINER(chooser_button_box), chooser_button);
 
 	gtk_widget_show_all(window);
 }
 
-void set_path(GtkWidget *button, gpointer list_box) {
+void set_path(GtkWidget *button, feed_object *feed) {
 	gchar *path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(button));
-	update_feed(list_box, path);
-	gtk_widget_show_all(list_box);
+	feed_update(feed, path);
+
+	gtk_widget_show_all(feed->list);
 }
 

@@ -22,7 +22,7 @@ $(OBJDIR)/window.o: $(SRCDIR)/window.c | $(OBJDIR)
 	$(CC) -c $(CFLAGS) $(SRCDIR)/window.c $(GTKDEPS) $(LIBXMLDEPS) -o $(OBJDIR)/window.o
 
 $(OBJDIR)/parser.o: $(SRCDIR)/parser.c | $(OBJDIR)
-	$(CC) -c $(CFLAGS) $(SRCDIR)/parser.c $(GLIBDEPS) $(LIBXMLDEPS) -o $(OBJDIR)/parser.o
+	$(CC) -c $(CFLAGS) $(SRCDIR)/parser.c $(GTKDEPS) $(LIBXMLDEPS) -o $(OBJDIR)/parser.o
 
 $(OBJDIR)/update.o: $(SRCDIR)/update.c | $(OBJDIR)
 	$(CC) -c $(CFLAGS) $(SRCDIR)/update.c $(GTKDEPS) $(LIBXMLDEPS) -o $(OBJDIR)/update.o
