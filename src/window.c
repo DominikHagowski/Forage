@@ -1,6 +1,6 @@
 #include "window.h"
 
-void activate(GtkApplication *app, gpointer user_data) {
+void activate(GtkApplication *app, void *user_data) {
 	const int win_width = 800;
 	const int win_height = 600;
 	const int paned_pos = 300;
@@ -60,7 +60,7 @@ void activate(GtkApplication *app, gpointer user_data) {
 }
 
 void set_path(GtkWidget *button, feed_object *feed) {
-	gchar *path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(button));
+	char *path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(button));
 	feed_update(feed, path);
 
 	gtk_widget_show_all(feed->list);

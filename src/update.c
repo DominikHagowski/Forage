@@ -11,7 +11,7 @@ feed_object *feed_init(GtkWidget *list, GtkWidget *text_box) {
 	return feed;
 }
 
-void feed_update(feed_object *feed, gchar *path) {
+void feed_update(feed_object *feed, char *path) {
 	GList *items = feed->items;
 	items = parse_document(items, path);
 	feed_item *current_item;
