@@ -3,7 +3,6 @@
 void activate(GtkApplication *app, gpointer user_data) {
 	const int win_width = 800;
 	const int win_height = 600;
-	const int row_count = 100;
 	const int paned_pos = 300;
 
 	GtkWidget *window;
@@ -13,8 +12,10 @@ void activate(GtkApplication *app, gpointer user_data) {
 	GtkWidget *scrolled_window;
 	GtkWidget *list_box;
 	GtkWidget *text_box;
-	GtkWidget *button;
-	GtkWidget *button_box;
+	GtkWidget *chooser_button;
+	GtkWidget *chooser_button_box;
+
+	feed_object *feed;
 
 	window = gtk_application_window_new(app);
 	gtk_window_set_title(GTK_WINDOW(window), "Forage");
@@ -42,38 +43,26 @@ void activate(GtkApplication *app, gpointer user_data) {
 	list_box = gtk_list_box_new();
 	gtk_container_add(GTK_CONTAINER(scrolled_window), list_box);
 
-	for (int i = 0; i < row_count; i++) {
-		GtkWidget *row = create_row("Placeholder entry");
-		gtk_list_box_insert(GTK_LIST_BOX(list_box), row, -1);
-	}
-
 	text_box = gtk_text_view_new();
 	gtk_paned_add2(GTK_PANED(panes), text_box);
 
-	button_box = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
-	g_object_set(G_OBJECT(button_box), "vexpand", 0, NULL);
-	gtk_grid_attach(GTK_GRID(grid), button_box, 0, 3, 1, 1);
+	chooser_button_box = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
+	g_object_set(G_OBJECT(chooser_button_box), "vexpand", 0, NULL);
+	gtk_grid_attach(GTK_GRID(grid), chooser_button_box, 0, 3, 1, 1);
 
-	button = gtk_button_new_with_label("Button");
-	//g_signal_connect(button, "clicked", G_CALLBACK(parse_document), NULL);
-	gtk_container_add(GTK_CONTAINER(button_box), button);
+	feed = feed_init(list_box, text_box);
+
+	chooser_button = gtk_file_chooser_button_new("Open", GTK_FILE_CHOOSER_ACTION_OPEN);
+	g_signal_connect(chooser_button, "file-set", G_CALLBACK(set_path), feed);
+	gtk_container_add(GTK_CONTAINER(chooser_button_box), chooser_button);
 
 	gtk_widget_show_all(window);
 }
 
-GtkWidget *create_row(gchar *text) {
-	GtkWidget *row;
-	GtkWidget *box;
-	GtkWidget *label;
+void set_path(GtkWidget *button, feed_object *feed) {
+	gchar *path = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(button));
+	feed_update(feed, path);
 
- 	row = gtk_list_box_row_new();
-
-	box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
-	gtk_container_add(GTK_CONTAINER(row), box);
-
-	label = gtk_label_new(text);
-	gtk_container_add(GTK_CONTAINER(box), label);
-
-	return row;
+	gtk_widget_show_all(feed->list);
 }
 
